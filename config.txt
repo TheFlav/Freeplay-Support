@@ -67,10 +67,10 @@ hdmi_cvt=320 240 24 1 0 0 0
 #hdmi_group=1
 #hdmi_mode=1
 
-hdmi_group=2
+#hdmi_group=2
 #hdmi_mode=4
 #hdmi_mode=9
-hdmi_mode=16
+#hdmi_mode=16
 
 #if you use Ed's modified fbcp, you can rotate 0 to get rid of diagonal tearing
 #dtoverlay=waveshare32b,speed=80000000,fps=60,rotate=0
