@@ -33,13 +33,13 @@ import os
 
 # ==== constants
 __author__ = 'original from Paul W. Versteeg, hacked by Ed'
-VERSION = "3.2-Freeplay"
+VERSION = "3.2-Freeplay-02"
 
 # ==== GPIO setup
 STOP_REQ = 20 # Stop/start button input, active low to shutdown RPi
 LOW_BATT = 7  # GPIO7 = low batt from MCU supervisor chip
 
-pwr_btn_timeout = 2.0   # how many seconds does the power button need to be held
+pwr_btn_timeout = 4.0   # how many seconds does the power button need to be held
 pwr_btn_edge_start = 0
 
 low_batt_timeout = 60.0
@@ -128,7 +128,8 @@ def low_batt_req(LOW_BATT):
       return
 
 def main():
-
+      global pwr_btn_edge_start
+      global low_batt_edge_start
       init()
 
       while True :
@@ -141,24 +142,40 @@ def main():
                 #print 'sleep 0.1'
                 sleep(0.1)
       
-            #print 'main: pwr_btn_edge_start=',pwr_btn_edge_start
+            temp_time = time()
             if pwr_btn_edge_start > 0 :
-                if (time() - pwr_btn_edge_start) > pwr_btn_timeout :
+                #print 'main: pwr_btn_edge_start=',pwr_btn_edge_start
+                #print 'main: temp_time=',temp_time,'  (temp_time - pwr_btn_edge_start)=',(temp_time - pwr_btn_edge_start)
+                #print 'main: pwr_btn_timeout=',pwr_btn_timeout
+                if ((temp_time - pwr_btn_edge_start)) > pwr_btn_timeout :
                     #print 'SHUTTING DOWN from PWR BTN'
-                    GPIO.remove_event_detect(STOP_REQ)
-                    GPIO.remove_event_detect(LOW_BATT)
-                    subprocess.call(['sudo poweroff'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    return
+                    #print ''
+                    if GPIO.input(STOP_REQ) == 1 : 
+                        GPIO.remove_event_detect(STOP_REQ)
+                        GPIO.remove_event_detect(LOW_BATT)
+                        subprocess.call(['sudo poweroff'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        return
+                    else :
+                        GPIO.remove_event_detect(STOP_REQ)
+                        pwr_btn_edge_start=0
+                        #print '(FAILSAFE) power button fell'
+                        GPIO.add_event_detect(STOP_REQ, GPIO.RISING, callback=stop_req, bouncetime=20)
+  
 
             #print 'main: low_batt_edge_start=',low_batt_edge_start
             if low_batt_edge_start > 0 :
-                if (time() - low_batt_edge_start) > low_batt_timeout :
+                if ((time() - low_batt_edge_start)) > low_batt_timeout :
                     #print 'SHUTTING DOWN from LOW BATT'
-                    GPIO.remove_event_detect(STOP_REQ)
-                    GPIO.remove_event_detect(LOW_BATT)
-                    subprocess.call(['sudo poweroff'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    return
-
+                    if GPIO.input(LOW_BATT) == 0 :
+                        GPIO.remove_event_detect(STOP_REQ)
+                        GPIO.remove_event_detect(LOW_BATT)
+                        subprocess.call(['sudo poweroff'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        return
+                    else :
+                        GPIO.remove_event_detect(LOW_BATT)
+                        low_batt_edge_start=0
+                        #print '(FAILSAFE) low batt rose'
+                        GPIO.add_event_detect(LOW_BATT, GPIO.FALLING, callback=low_batt_req, bouncetime=20)
 
 if __name__ == '__main__':
       main()
