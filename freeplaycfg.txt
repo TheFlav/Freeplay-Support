@@ -1,0 +1,7 @@
+#FREEPLAYSTARTUP=RUNPY            #start up running a python script
+#FREEPLAYSTARTUP=RUNCMD           #start up running a specific command (bash script, exe, etc)
+#FREEPLAYSTARTUP=CMDLINE          #start up to a shell command prompt
+FREEPLAYSTARTUP=EMULATIONSTATION
+
+STARTUPPY=/boot/fpstartup.py      #used if FREEPLAYSTARTUP=RUNPY
+STARTUPCMD="jstest /dev/input/js0"  #used if FREEPLAYSTARTUP=RUNCMD (untested)
