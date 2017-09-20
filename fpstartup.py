@@ -5,6 +5,7 @@
 
 import os, struct, array, thread
 from fcntl import ioctl
+from subprocess import call
 
 # Iterate over the joystick devices.
 print('Available devices:')
@@ -12,6 +13,7 @@ print('Available devices:')
 for fn in os.listdir('/dev/input'):
     if fn.startswith('js'):
         print('  /dev/input/%s' % (fn))
+print ""
 
 # We'll store the states here.
 axis_states = {}
@@ -96,6 +98,7 @@ button_map = []
 fn = '/dev/input/js0'
 print('Opening %s...' % fn)
 jsdev = open(fn, 'rb')
+print ""
 
 # Get the device name.
 #buf = bytearray(63)
@@ -132,7 +135,7 @@ for btn in buf[:num_buttons]:
     button_states[btn_name] = 0
 
 print '%d axes found: %s' % (num_axes, ', '.join(axis_map))
-print '%d buttons found: %s' % (num_buttons, ', '.join(button_map))
+print '%d buttons found:\n%s' % (num_buttons, ', '.join(button_map))
 print ""
 print ""
 
@@ -172,19 +175,24 @@ thread.start_new_thread(event_thread, ())
 
 
 def btn_test(btn_name, num_times):
-  while(num_times > 0) :
+  test_num = 1
+  while(test_num <= num_times) :
     if(btn_name == 'mode'):
       print 'Double tap PWR to press "mode"'
     if(num_times > 1) :
-      print 'Press button "%s" %d times' % (btn_name, num_times)
+      print 'Press button "%s" (%d of %d)' % (btn_name, test_num, num_times)
     else :
       print 'Press button "%s"' % (btn_name)
 
     while (button_states[btn_name] == 0) :
-      continue
+      if((button_states['tr'] == 1) and (button_states['tl'] == 1)) :
+        print '*** Skipping button "%s" test ***' % (btn_name)
+        while(button_states['tr'] == 1 or button_states['tl'] == 1) :
+          continue
+        return
     while (button_states[btn_name] == 1) :
       continue
-    num_times-=1
+    test_num+=1
   return
 
 
@@ -196,17 +204,28 @@ def dpad_test(num_times):
       continue
     while (axis_states['x'] < 0) :
       continue
+    test_num+=1
+
+  test_num = 1
+  while(test_num <= num_times) :
     print 'Press dpad right (%d of %d)' % (test_num,num_times)
     while (axis_states['x'] <= 0) :
       continue
     while (axis_states['x'] > 0) :
       continue
+    test_num+=1
 
+  test_num = 1
+  while(test_num <= num_times) :
     print 'Press dpad up (%d of %d)' % (test_num,num_times)
     while (axis_states['y'] >= 0) :
       continue
     while (axis_states['y'] < 0) :
       continue
+    test_num+=1
+
+  test_num = 1
+  while(test_num <= num_times) :
     print 'Press dpad down (%d of %d)' % (test_num,num_times)
     while (axis_states['y'] <= 0) :
       continue
@@ -217,12 +236,34 @@ def dpad_test(num_times):
 
 dpad_test(3)
 
-btn_test('a', 3)
-btn_test('b', 3)
-btn_test('x', 3)
-btn_test('y', 3)
-btn_test('tl', 3)
-btn_test('tr', 3)
-btn_test('select', 3)
-btn_test('start', 3)
-btn_test('mode', 3)
+print "BUTTON TESTS"
+print "  Press both shoulder buttons"
+print "       to skip a test."
+
+btn_num = 0
+while (btn_num < num_buttons) :
+  btn_test(button_map[btn_num], 3)
+  btn_num+=1
+
+print ""
+print "Speaker (Mono Right Only) Audio Test:"
+print "  REMOVE HEADPHONES from jack"
+print "    Set volume wheel to full volume"
+print "    Actuate volume wheel during"
+print "      Center and WahWah"
+btn_test('a', 1)
+call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4"])
+
+print ""
+print "Headphone Stereo Audio Test:"
+print "  INSERT HEADPHONES into jack"
+print "    Set volume wheel to full volume"
+print "    Actuate volume wheel during"
+print "      Center and WahWah"
+btn_test('a', 1)
+call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4"])
+
+
+print ""
+print "Test Complete"
+btn_test('a', 1)
