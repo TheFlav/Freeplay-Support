@@ -7,6 +7,9 @@ import os, struct, array, thread
 from fcntl import ioctl
 from subprocess import call
 
+#if you want to run the USB test, set this to 1
+doUSBtest = 1
+
 # Iterate over the joystick devices.
 print('Available devices:')
 
@@ -252,7 +255,7 @@ print "    Set volume wheel to full volume"
 print "    Actuate volume wheel during"
 print "      Center and WahWah"
 btn_test('a', 1)
-call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4"])
+call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
 
 print ""
 print "Headphone Stereo Audio Test:"
@@ -261,9 +264,59 @@ print "    Set volume wheel to full volume"
 print "    Actuate volume wheel during"
 print "      Center and WahWah"
 btn_test('a', 1)
-call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4"])
+call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
+
+if( doUSBtest == 1 ) :
+ print ""
+ print "USB Port Test:"
+ btn_test('a', 1)
+
+
+ import glib
+ usbstate = 0
+
+ from pyudev import Context, Monitor
+ from pyudev.glib import GUDevMonitorObserver as MonitorObserver
+
+ mainloop = glib.MainLoop()
+
+ def device_event(observer, action, device):
+    global usbstate
+    if( usbstate == 0 and action == "add" ) :
+      print 'Please remove the USB device'
+      usbstate = 1
+
+    if( usbstate == 1 and action == "remove" ) :
+      print 'Device removal detected'
+      usbstate = 2
+
+ #    print 'event {0} on device {1}'.format(action, device)
+    if( usbstate == 2 ) :
+      mainloop.quit()
+
+ context = Context()
+ monitor = Monitor.from_netlink(context)
+
+ monitor.filter_by(subsystem='usb')
+ observer = MonitorObserver(monitor)
+
+ observer.connect('device-event', device_event)
+ monitor.start()
+
+ print 'Please insert a USB device and wait for it to be detected'
+
+ mainloop.run()
+
+ if ( usbstate == 2 ) :
+  print 'USB test passed'
+ else :
+  print 'USB test FAILED!'
+
 
 
 print ""
-print "Test Complete"
+print "Tests Complete"
+print "  Starting EmulationStation"
 btn_test('a', 1)
+
+call(["emulationstation"])

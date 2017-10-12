@@ -1,33 +1,28 @@
 # For more options and information see
-# http://www.raspberrypi.org/documentation/configuration/config-txt.md
+# http://rpf.io/configtxtreadme
 # Some settings may impact device functionality. See link above for details
-
-#initramfs initrd.img-4.4.11+
 
 # uncomment if you get no picture on HDMI for a default "safe" mode
 #hdmi_safe=1
 
 # uncomment this if your display has a black border of unused pixels visible
 # and your display can output without overscan
-disable_overscan=0
+#disable_overscan=1
 
 # uncomment the following to adjust overscan. Use positive numbers if console
 # goes off screen, and negative if there is too much border
-overscan_left=60
-overscan_right=0
-overscan_top=26
-overscan_bottom=80
+#overscan_left=16
+#overscan_right=16
+#overscan_top=16
+#overscan_bottom=16
 
 # uncomment to force a console size. By default it will be display's size minus
 # overscan.
 #framebuffer_width=1280
 #framebuffer_height=720
-framebuffer_width=320
-framebuffer_height=240
 
 # uncomment if hdmi display is not detected and composite is being output
-#HDMI always on
-hdmi_force_hotplug=1
+#hdmi_force_hotplug=1
 
 # uncomment to force a specific HDMI mode (this will force VGA)
 #hdmi_group=1
@@ -50,32 +45,12 @@ hdmi_force_hotplug=1
 # Uncomment some or all of these to enable the optional hardware interfaces
 #dtparam=i2c_arm=on
 #dtparam=i2s=on
-dtparam=spi=on
+#dtparam=spi=on
 
 # Uncomment this to enable the lirc-rpi module
 #dtoverlay=lirc-rpi
 
 # Additional overlays and parameters are documented /boot/overlays/README
-
-#the following hdmi_cvt line creates mode "group 2 mode 87"
-# w=320 h=240 60Hz aspect=(1=4:3)
-hdmi_cvt=320 240 24 1 0 0 0
-#hdmi_group=2
-#hdmi_mode=87
-
-#VGA 640x480 60Hz (I hope)
-#hdmi_group=1
-#hdmi_mode=1
-
-#hdmi_group=2
-#hdmi_mode=4
-#hdmi_mode=9
-#hdmi_mode=16
-
-#if you use Ed's modified fbcp, you can rotate 0 to get rid of diagonal tearing
-#dtoverlay=waveshare32b,speed=80000000,fps=60,rotate=0
-dtoverlay=waveshare32b,speed=80000000,fps=60,rotate=270
-#dtoverlay=waveshare32b,speed=80000000,fps=24,rotate=270
 
 # Enable audio (loads snd_bcm2835)
 dtparam=audio=on
@@ -83,12 +58,37 @@ gpu_mem_256=128
 gpu_mem_512=256
 gpu_mem_1024=256
 overscan_scale=1
-dtoverlay=pwm-audio-pi-zero-12-13
-dtoverlay=gpio-poweroff,gpiopin=21,active_low
-#dtoverlay=gpio-poweroff,gpiopin=21,active_high
 
+# add this entire file to your /boot/config.txt
+#
+# BEGIN FREEPLAY MODS
+framebuffer_width=320
+framebuffer_height=240
+hdmi_force_hotplug=1   #these HDMI lines will try to set up 1024x768 (you can remove them if you have problems playing via HDMI)
+HDMI_FORCE_MODE=1
+hdmi_group=2
+hdmi_mode=16
+hdmi_drive=1           #Normal DVI mode (No sound) (2 for HDMI with sound)
+dtparam=spi=on
+dtparam=audio=on
+dtoverlay=waveshare32b,speed=80000000,fps=60,rotate=270
+[pi0]
+#Freeplay Zero
+dtoverlay=audremap,swap_lr=off
+[pi3]
+#Freeplay CM3
+dtoverlay=audremap,swap_lr=on
+[pi2]
+#Sometimes we test with Pi2
+dtoverlay=audremap,swap_lr=on
+[all]
+dtoverlay=gpio-poweroff,gpiopin=21,active_low
 # Disable the ACT LED on the Pi Zero.
 dtparam=act_led_trigger=none
 dtparam=act_led_activelow=on
-
 audio_pwm_mode=2
+dtparam=watchdog=on	# Enabling watchdog.
+# remove # from following 2 lines to turn wifi and bluetooth off (if not needed, can Speed Up Pi Zero W)
+#dtoverlay=pi3-disable-wifi
+#dtoverlay=pi3-disable-bt
+# END FREEPLAY MODS
