@@ -16,3 +16,4 @@ fi
 sudo cp autostart.sh /opt/retropie/configs/all
 sudo cp freeplaycfg.txt /boot
 sudo cp fpstartup.py /boot
+#sudo dpkg-reconfigure tzdata
