@@ -1,0 +1,11 @@
+[Unit]
+Description=Kill EmulationStation
+After=autologin@tty1.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStop=/home/pi/Freeplay/Freeplay-Support/killes.sh
+
+[Install]
+WantedBy=multi-user.target

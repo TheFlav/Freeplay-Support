@@ -18,4 +18,7 @@ sudo cp freeplaycfg.txt /boot
 sudo cp fpstartup.py /boot
 sudo mv /opt/retropie/configs/n64/InputAutoCfg.ini /opt/retropie/configs/n64/InputAutoCfg.preFP.ini
 sudo cp InputAutoCfg.ini /opt/retropie/configs/n64/
+chmod a+x killes.sh
+sudo cp killes.service /etc/systemd/system/
+sudo systemctl enable killes
 #sudo dpkg-reconfigure tzdata
