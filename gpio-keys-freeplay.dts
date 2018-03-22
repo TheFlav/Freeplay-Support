@@ -1,0 +1,76 @@
+/dts-v1/;
+/plugin/;
+/ {
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+	
+	fragment@0 {
+		target-path = "/soc";
+		__overlay__ {
+			keypad: keypad {
+				compatible = "gpio-keys";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				button@6 {
+					label = "FP LEFT";
+					linux,code = <105>;
+					gpios = <&gpio 6 1>;
+				};
+				button@5 {
+					label = "FP RIGHT";
+					linux,code = <106>;
+					gpios = <&gpio 5 1>;
+				};
+				button@4 {
+					label = "FP UP";
+					linux,code = <103>;
+					gpios = <&gpio 4 1>;
+				};
+				button@17 {
+					label = "FP DOWN";
+					linux,code = <108>;
+					gpios = <&gpio 17 1>;
+				};
+				button@16 {
+					label = "FP A";
+					linux,code = <30>;
+					gpios = <&gpio 16 1>;
+				};
+				button@24 {
+					label = "FP S";
+					linux,code = <31>;
+					gpios = <&gpio 24 1>;
+				};
+				button@19 {
+					label = "FP ENTER";
+					linux,code = <28>;
+					gpios = <&gpio 19 1>;
+				};
+				button@26 {
+					label = "FP SPACE";
+					linux,code = <57>;
+					gpios = <&gpio 26 1>;
+				};
+				button@15 {
+					label = "FP X";
+					linux,code = <45>;
+					gpios = <&gpio 15 1>;
+				};
+				button@18 {
+					label = "FP Y";
+					linux,code = <21>;
+					gpios = <&gpio 18 1>;
+				};
+				button@14 {
+					label = "FP L";
+					linux,code = <38>;
+					gpios = <&gpio 14 1>;
+				};
+				button@23 {
+					label = "FP R";
+					linux,code = <19>;
+					gpios = <&gpio 23 1>;
+				};
+			};
+		};
+	};
+};
