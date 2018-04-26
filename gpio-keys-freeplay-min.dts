@@ -19,7 +19,7 @@
 	fragment@1 {
 		target-path = "/";
 		__overlay__ {
-			button: button@0 {
+			button: Freeplay_GPIO_Keys {
 				compatible = "gpio-keys";
 				pinctrl-names = "default";
 				pinctrl-0 = <&pin_state>;
