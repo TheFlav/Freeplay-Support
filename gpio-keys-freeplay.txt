@@ -2,3 +2,8 @@ This seems to work well, but it kills the audio.
 
 gpio-keys-freeplay:	Maps Up,Dn,Left,Right,A,B,Start,Sel,X,Y,shoulderL, shoulderR
 gpio-keys-freeplay-min:	Doesn't map X, Y, shoulderL, shoulderR
+
+Place the .dtbo file in /boot/overlays/ and in /boot/config.txt, use
+dtoverlay=gpio-keys-freeplay
+or
+dtoverlay=gpio-keys-freeplay-min
