@@ -6,6 +6,7 @@
 import os, struct, array, thread
 from fcntl import ioctl
 from subprocess import call
+from time import sleep
 
 #if you want to run the USB test, set this to 1
 doUSBtest = 1
@@ -193,9 +194,11 @@ def btn_test(btn_name, num_times):
       if((button_states['tr'] == 1) and (button_states['tl'] == 1)) :
         print '*** Skipping button "%s" test ***' % (btn_name)
         while(button_states['tr'] == 1 or button_states['tl'] == 1) :
+          sleep(0.1)
           continue
         return
     while (button_states[btn_name] == 1) :
+      sleep(0.1)
       continue
     test_num+=1
   return
@@ -204,26 +207,30 @@ def btn_test(btn_name, num_times):
 def dpad_test(num_times):
   for test_axis in axis_map:
     test_num = 1
-    print '%s test: Press A to test or B to skip' % (test_axis)
-    while ((button_states['a'] == 0) and (button_states['b'] == 0)) :
-      continue
     skip = 0
-    if(button_states['b'] == 1 and button_states['a'] == 0) :
-       skip = 1
-    while ((button_states['a'] == 1) or (button_states['b'] == 1)) :
-      continue
 
-    if(skip == 0) :
-      while(test_num <= num_times) :
-        print 'Press %s min (%d of %d)' % (test_axis,test_num,num_times)
-        while (axis_states[test_axis] >= 0) :
+    while(skip == 0 and test_num <= num_times) :
+      print 'Press %s min (%d of %d) [l+r to skip]' % (test_axis,test_num,num_times)
+      while (skip == 0 and axis_states[test_axis] >= 0) :
+        if((button_states['tr'] == 1) and (button_states['tl'] == 1)) :
+          skip = 1
+          print '*** Skipping axis "%s" test ***' % (test_axis)
+          while(button_states['tr'] == 1 or button_states['tl'] == 1) :
+            sleep(0.1)
+            continue
+        else :
+          sleep(0.1)
           continue
+      if(skip == 0) :
         while (axis_states[test_axis] < 0) :
+          sleep(0.1)
           continue
         print 'Press %s max (%d of %d)' % (test_axis,test_num,num_times)
         while (axis_states[test_axis] <= 0) :
+          sleep(0.1)
           continue
         while (axis_states[test_axis] > 0) :
+          sleep(0.1)
           continue
         test_num+=1
   return
