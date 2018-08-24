@@ -186,19 +186,19 @@ def btn_test(btn_name, num_times):
     if(btn_name == 'mode'):
       print 'Double tap PWR to press "mode"'
     if(num_times > 1) :
-      print 'Press button "%s" (%d of %d)' % (btn_name, test_num, num_times)
+      print 'Press BUTTON "%s" (%d of %d)' % (btn_name, test_num, num_times)
     else :
-      print 'Press button "%s"' % (btn_name)
+      print 'Press BUTTON "%s"' % (btn_name)
 
     while (button_states[btn_name] == 0) :
       if((button_states['tr'] == 1) and (button_states['tl'] == 1)) :
         print '*** Skipping button "%s" test ***' % (btn_name)
         while(button_states['tr'] == 1 or button_states['tl'] == 1) :
-          sleep(0.1)
+          sleep(0.05)
           continue
         return
     while (button_states[btn_name] == 1) :
-      sleep(0.1)
+      sleep(0.05)
       continue
     test_num+=1
   return
@@ -210,27 +210,27 @@ def dpad_test(num_times):
     skip = 0
 
     while(skip == 0 and test_num <= num_times) :
-      print 'Press %s min (%d of %d) [l+r to skip]' % (test_axis,test_num,num_times)
+      print 'Press AXIS %s min (%d of %d) [l+r to skip]' % (test_axis,test_num,num_times)
       while (skip == 0 and axis_states[test_axis] >= 0) :
         if((button_states['tr'] == 1) and (button_states['tl'] == 1)) :
           skip = 1
           print '*** Skipping axis "%s" test ***' % (test_axis)
           while(button_states['tr'] == 1 or button_states['tl'] == 1) :
-            sleep(0.1)
+            sleep(0.05)
             continue
         else :
-          sleep(0.1)
+          sleep(0.05)
           continue
       if(skip == 0) :
         while (axis_states[test_axis] < 0) :
-          sleep(0.1)
+          sleep(0.05)
           continue
-        print 'Press %s max (%d of %d)' % (test_axis,test_num,num_times)
+        print 'Press AXIS %s max (%d of %d)' % (test_axis,test_num,num_times)
         while (axis_states[test_axis] <= 0) :
-          sleep(0.1)
+          sleep(0.05)
           continue
         while (axis_states[test_axis] > 0) :
-          sleep(0.1)
+          sleep(0.05)
           continue
         test_num+=1
   return
