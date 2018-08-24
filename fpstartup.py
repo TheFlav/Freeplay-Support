@@ -10,6 +10,8 @@ from subprocess import call
 #if you want to run the USB test, set this to 1
 doUSBtest = 1
 
+call(["grep", "mk_arcade", "/var/log/kern.log"])
+
 # Iterate over the joystick devices.
 print('Available devices:')
 
@@ -200,41 +202,30 @@ def btn_test(btn_name, num_times):
 
 
 def dpad_test(num_times):
-  test_num = 1
-  while(test_num <= num_times) :
-    print 'Press dpad left (%d of %d)' % (test_num,num_times)
-    while (axis_states['x'] >= 0) :
+  for test_axis in axis_map:
+    test_num = 1
+    print '%s test: Press A to test or B to skip' % (test_axis)
+    while ((button_states['a'] == 0) and (button_states['b'] == 0)) :
       continue
-    while (axis_states['x'] < 0) :
+    skip = 0
+    if(button_states['b'] == 1 and button_states['a'] == 0) :
+       skip = 1
+    while ((button_states['a'] == 1) or (button_states['b'] == 1)) :
       continue
-    test_num+=1
 
-  test_num = 1
-  while(test_num <= num_times) :
-    print 'Press dpad right (%d of %d)' % (test_num,num_times)
-    while (axis_states['x'] <= 0) :
-      continue
-    while (axis_states['x'] > 0) :
-      continue
-    test_num+=1
-
-  test_num = 1
-  while(test_num <= num_times) :
-    print 'Press dpad up (%d of %d)' % (test_num,num_times)
-    while (axis_states['y'] >= 0) :
-      continue
-    while (axis_states['y'] < 0) :
-      continue
-    test_num+=1
-
-  test_num = 1
-  while(test_num <= num_times) :
-    print 'Press dpad down (%d of %d)' % (test_num,num_times)
-    while (axis_states['y'] <= 0) :
-      continue
-    while (axis_states['y'] > 0) :
-      continue
-    test_num+=1
+    if(skip == 0) :
+      while(test_num <= num_times) :
+        print 'Press %s min (%d of %d)' % (test_axis,test_num,num_times)
+        while (axis_states[test_axis] >= 0) :
+          continue
+        while (axis_states[test_axis] < 0) :
+          continue
+        print 'Press %s max (%d of %d)' % (test_axis,test_num,num_times)
+        while (axis_states[test_axis] <= 0) :
+          continue
+        while (axis_states[test_axis] > 0) :
+          continue
+        test_num+=1
   return
 
 dpad_test(3)
@@ -257,19 +248,19 @@ print "      Center and WahWah"
 btn_test('a', 1)
 call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
 
-print ""
-print "Headphone Stereo Audio Test:"
-print "  INSERT HEADPHONES into jack"
-print "    Set volume wheel to full volume"
-print "    Actuate volume wheel during"
-print "      Center and WahWah"
-btn_test('a', 1)
-call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
+# print ""
+# print "Headphone Stereo Audio Test:"
+# print "  INSERT HEADPHONES into jack"
+# print "    Set volume wheel to full volume"
+# print "    Actuate volume wheel during"
+# print "      Center and WahWah"
+# btn_test('a', 1)
+# call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
 
 if( doUSBtest == 1 ) :
  print ""
  print "USB Port Test:"
- btn_test('a', 1)
+#  btn_test('a', 1)
 
 
  import glib
