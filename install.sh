@@ -21,4 +21,5 @@ sudo cp InputAutoCfg.ini /opt/retropie/configs/n64/
 chmod a+x killes.sh
 sudo cp killes.service /etc/systemd/system/
 sudo systemctl enable killes
+sudo ./installWatchDog.sh
 #sudo dpkg-reconfigure tzdata
