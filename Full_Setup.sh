@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-#Modules can be added here, separated by spaces
-#The description must use underscores instead of spaces
+# Modules can be added here in the following format:
+# Tail_of_GitHub_URL Short_Description Default_Checkbox_State
+# The description must use underscores instead of spaces
 ADDONS=(
 "TheFlav/Freeplay-Support General_Freeplay_Tools on"
 "TheFlav/rpi-fbcp Original_display_driver_(Zero) on"
@@ -10,16 +11,12 @@ ADDONS=(
 "TheFlav/setPCA9633 PWM_Brightness_controller_(requires_add-on) on"
 )
 
-echo "${ADDONS[@]}"
-
 cmd=(dialog --title "Install Addons" \
 	--separate-output \
 	--ok-label "Install" \
 	--checklist "Select options:" 0 0 0)
 
 CHOICES=$("${cmd[@]}" ${ADDONS[@]} 2>&1 >/dev/tty)
-
-echo "${CHOICES[@]}"
 clear
 
 ####################
