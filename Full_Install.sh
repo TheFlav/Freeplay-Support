@@ -51,16 +51,22 @@ else
 		printf "\t\e[0;31;40m"$MODULE"\u001b[0m\n"
 	done
 fi
+sleep 1
 
 INST_ERR=()
 printf "\n\u001b[36;1mInstalling downloaded modules\u001b[0m\n"
 for DIR in $(ls -d */)
 do
 	pushd $DIR &> /dev/null
-	printf "\t\u001b[36;1m$DIR...\u001b[0m\n"
-####################
-# TODO Add Install #
-####################
+	printf "\t\u001b[36;1m$DIR...\u001b[0m"
+
+	if [ ./install.sh -eq 0 ]; then
+		printf "\u001b[36;1mInstalled Successfully\u001b[0m"
+	else
+		printf "\e[0;31;40mInstalled Successfully\u001b[0m"
+		INST_ERR+=( "$DIR" )
+	fi
+
 	popd &> /dev/null
 done
 popd &> /dev/null
