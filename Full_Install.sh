@@ -80,3 +80,17 @@ else
 		printf "\t\e[0;31;40m"$MODULE"\u001b[0m\n"
 	done
 fi
+
+dialog --title "RxBrad Freeplay Theme" \
+	--yesno "Would you like to download and install RxBrad's Freeplay theme for EmulationStation?" 0 0
+
+RESP=$?
+case $RESP in
+	0) sudo git clone --recursive --depth 1 "https://github.com/rxbrad/es-theme-freeplay.git" "/etc/emulationstation/themes/freeplay"; \
+		sudo sed -i 's/<string name="ThemeSet" value=".*" \/>/<string name="ThemeSet" value="freeplay" \/>/g' /opt/retropie/configs/all/emulationstation/es_settings.cfg; \
+		sudo sed -i 's/<string name="TransitionStyle" value=".*" \/>/<string name="TransitionStyle" value="instant" \/>/' /opt/retropie/configs/all/emulationstation/es_settings.cfg;;
+	1) ;;
+	255) ;;
+esac
+
+exit 0
