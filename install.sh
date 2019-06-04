@@ -23,3 +23,5 @@ sudo cp killes.service /etc/systemd/system/
 sudo systemctl enable killes
 sudo ./installWatchDog.sh
 #sudo dpkg-reconfigure tzdata
+
+exit 0
