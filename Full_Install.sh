@@ -22,13 +22,13 @@ clear
 ####################
 #   TODO Remove    #
 ####################
-rm -rf Freeplay
+#rm -rf Freeplay
 
-mkdir Freeplay
+mkdir /home/pi/Freeplay
 
 printf "Downloading selected Addons. If there are any prompts, press Enter."
 
-pushd /home/pi/Freeplay/Freeplay-Support/Freeplay/ &> /dev/null
+pushd /home/pi/Freeplay &> /dev/null
 
 DL_ERR=()
 for ADDON in $CHOICES
