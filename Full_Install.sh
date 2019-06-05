@@ -60,7 +60,7 @@ do
 	pushd $DIR &> /dev/null
 	printf "\t\u001b[36;1m$DIR...\u001b[0m\n"
 
-	if ./install.sh; then
+	if sudo ./install.sh; then
 		printf "\u001b[36;1m$DIR Installed Successfully\u001b[0m\n"
 	else
 		printf "\e[0;31;40m$DIR NOT Installed Successfully\u001b[0m\n"
