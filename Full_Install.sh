@@ -19,11 +19,6 @@ cmd=(dialog --title "Install Addons" \
 CHOICES=$("${cmd[@]}" ${ADDONS[@]} 2>&1 >/dev/tty)
 clear
 
-####################
-#   TODO Remove    #
-####################
-#rm -rf Freeplay
-
 mkdir /home/pi/Freeplay
 
 printf "Downloading selected Addons. If there are any prompts, press Enter."
