@@ -3,12 +3,12 @@
 # Modules can be added here in the following format:
 # Tail_of_GitHub_URL Short_Description Default_Checkbox_State
 # The description must use underscores instead of spaces
-ADDONS=(
-"TheFlav/Freeplay-Support General_Freeplay_Tools on"
-"TheFlav/rpi-fbcp Original_display_driver_(Zero) on"
-"mootikins/FreeplayILI9341 Precompiled_advanced_display_driver_(Non-Zero) on"
-"TheFlav/mk_arcade_joystick_rpi GPIO_joystick_driver_with_related_tools on"
-"TheFlav/setPCA9633 PWM_Brightness_controller_(requires_add-on) on"
+ADDONS=( \
+"TheFlav/Freeplay-Support General_Freeplay_Tools on" \
+"TheFlav/rpi-fbcp Original_display_driver_(Zero) on" \
+"mootikins/FreeplayILI9341 Precompiled_advanced_display_driver_(Non-Zero) on" \
+"TheFlav/mk_arcade_joystick_rpi GPIO_joystick_driver_with_related_tools on" \
+"TheFlav/setPCA9633 PWM_Brightness_controller_(requires_add-on) on" \
 )
 
 cmd=(dialog --title "Install Addons" \
