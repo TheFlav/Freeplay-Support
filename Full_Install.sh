@@ -9,6 +9,7 @@ ADDONS=( \
 "mootikins/FreeplayILI9341 Precompiled_advanced_display_driver_(Non-Zero) on" \
 "TheFlav/mk_arcade_joystick_rpi GPIO_joystick_driver_with_related_tools on" \
 "TheFlav/setPCA9633 PWM_Brightness_controller_(requires_add-on) on" \
+"TheFlav/FreeplayAudioTools Audio_tools_for_HDMI_and_mono/stereo on" \
 )
 
 cmd=(dialog --title "Install Addons" \
