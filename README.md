@@ -7,7 +7,7 @@ bash -c "$(wget -O- https://raw.githubusercontent.com/TheFlav/Freeplay-Support/m
 ```
 It will use a checklist to let you select what modules you would like to install, then download and install them.
 
-If you are starting from a fresh Raspbian image, make sure to enable ssh first and add the following lines to `/boot/config.txt`:
+If you are starting from a fresh Raspbian image, make sure to enable ssh first and add the following lines to `/boot/config.txt` (More info can be found [HERE](https://docs.google.com/document/d/1jsMiFlVP3VeDBXceNmpgAKqP-99v2K9L3xj09K-zHSQ/edit#)):
 ```
 # BEGIN FREEPLAY MODS
 framebuffer_width=320
