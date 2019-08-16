@@ -22,6 +22,10 @@ chmod a+x killes.sh
 sudo cp killes.service /etc/systemd/system/
 sudo systemctl enable killes
 sudo ./installWatchDog.sh
+sudo raspi-config noint do_boot_wait 0
+sudo raspi-config noint do_i2c 1
+sudo apt remove samba
+sudo apt autoremove
 #sudo dpkg-reconfigure tzdata
 
 exit 0
