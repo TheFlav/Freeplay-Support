@@ -24,8 +24,8 @@ sudo systemctl enable killes
 sudo ./installWatchDog.sh
 sudo raspi-config noint do_boot_wait 0
 sudo raspi-config noint do_i2c 1
-sudo apt remove samba
-sudo apt autoremove
+sudo apt remove -y samba
+sudo apt autoremove -y
 #sudo dpkg-reconfigure tzdata
 
 exit 0
