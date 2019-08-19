@@ -47,4 +47,4 @@ dtparam=watchdog=on # Enabling watchdog.
 ```
 
 #### Ports
-Information about ports can be found [HERE](./Ports.md)
+Information about ports (other games you can add) can be found [HERE](./Ports.md)
