@@ -10,6 +10,7 @@ ADDONS=( \
 "TheFlav/mk_arcade_joystick_rpi GPIO_joystick_driver_with_related_tools on" \
 "TheFlav/setPCA9633 PWM_Brightness_controller_(requires_add-on) on" \
 "TheFlav/FreeplayAudioTools Audio_tools_for_HDMI_and_mono/stereo on" \
+"Mootikins/Freeplay-Wireless-Menu Menu_for_toggling_Bluetooth/WiFi_on_Pi_Zero_ONLY off" \
 )
 
 cmd=(dialog --title "Install Addons" \
