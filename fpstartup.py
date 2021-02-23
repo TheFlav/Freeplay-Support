@@ -11,8 +11,6 @@ from time import sleep
 #if you want to run the USB test, set this to 1
 doUSBtest = 1
 
-call(["grep", "mk_arcade", "/var/log/kern.log"])
-
 # Iterate over the joystick devices.
 print('Available devices:')
 
@@ -186,25 +184,61 @@ def btn_test(btn_name, num_times):
     if(btn_name == 'mode'):
       print 'Double tap PWR to press "mode"'
     if(num_times > 1) :
-      print 'Press BUTTON "%s" (%d of %d)' % (btn_name, test_num, num_times)
+      print 'Press button "%s" (%d of %d)' % (btn_name, test_num, num_times)
     else :
-      print 'Press BUTTON "%s"' % (btn_name)
+      print 'Press button "%s"' % (btn_name)
 
     while (button_states[btn_name] == 0) :
       if((button_states['tr'] == 1) and (button_states['tl'] == 1)) :
         print '*** Skipping button "%s" test ***' % (btn_name)
         while(button_states['tr'] == 1 or button_states['tl'] == 1) :
-          sleep(0.05)
           continue
         return
     while (button_states[btn_name] == 1) :
-      sleep(0.05)
       continue
     test_num+=1
   return
 
 
 def dpad_test(num_times):
+  test_num = 1
+  while(test_num <= num_times) :
+    print 'Press dpad left (%d of %d)' % (test_num,num_times)
+    while (axis_states['x'] >= 0) :
+      continue
+    while (axis_states['x'] < 0) :
+      continue
+    test_num+=1
+
+  test_num = 1
+  while(test_num <= num_times) :
+    print 'Press dpad right (%d of %d)' % (test_num,num_times)
+    while (axis_states['x'] <= 0) :
+      continue
+    while (axis_states['x'] > 0) :
+      continue
+    test_num+=1
+
+  test_num = 1
+  while(test_num <= num_times) :
+    print 'Press dpad up (%d of %d)' % (test_num,num_times)
+    while (axis_states['y'] >= 0) :
+      continue
+    while (axis_states['y'] < 0) :
+      continue
+    test_num+=1
+
+  test_num = 1
+  while(test_num <= num_times) :
+    print 'Press dpad down (%d of %d)' % (test_num,num_times)
+    while (axis_states['y'] <= 0) :
+      continue
+    while (axis_states['y'] > 0) :
+      continue
+    test_num+=1
+  return
+  
+def axis_test_all(num_times):
   for test_axis in axis_map:
     test_num = 1
     skip = 0
@@ -234,8 +268,44 @@ def dpad_test(num_times):
           continue
         test_num+=1
   return
+  
+  
 
+call(["/home/pi/Freeplay/setPCA9633/setPCA9633", "-y", "1", "-a", "0x62", "-d", "ON", "-w", "WAKE", "-i", "YES", "-l", "ON"])
+call(["/home/pi/Freeplay/setPCA9633/setPCA9633", "-y", "1", "-a", "0x62", "-d", "ON", "-w", "SLEEP"])
+print ""
+print ""
+print ""
+print "BACKLIGHT DIMMER TESTS (OFF, 30%, ON)"
+btn_test('a', 1)
+
+call(["/home/pi/Freeplay/setPCA9633/setPCA9633", "-y", "1", "-a", "0x62", "-d", "ON", "-w", "WAKE", "-i", "YES", "-l", "OFF"])
+print ""
+print ""
+print ""
+print "BACKLIGHT DIMMER TESTS: OFF"
+sleep(1)
+call(["/home/pi/Freeplay/setPCA9633/setPCA9633", "-y", "1", "-a", "0x62", "-d", "ON", "-w", "WAKE", "-i", "YES", "-l", "PWM", "-p", "30"])
+print ""
+print ""
+print ""
+print "BACKLIGHT DIMMER TESTS: 30%"
+sleep(1)
+call(["/home/pi/Freeplay/setPCA9633/setPCA9633", "-y", "1", "-a", "0x62", "-d", "ON", "-w", "WAKE", "-i", "YES", "-l", "ON"])
+call(["/home/pi/Freeplay/setPCA9633/setPCA9633", "-y", "1", "-a", "0x62", "-d", "ON", "-w", "SLEEP"])
+print ""
+print ""
+print ""
+print "BACKLIGHT DIMMER TESTS: ON"
+
+print ""
+print ""
+print ""
+print "DPAD TESTS"
 dpad_test(3)
+
+#use the following line to test all axes
+#axis_test_all(3)
 
 print "BUTTON TESTS"
 print "  Press both shoulder buttons"
@@ -255,19 +325,19 @@ print "      Center and WahWah"
 btn_test('a', 1)
 call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
 
-# print ""
-# print "Headphone Stereo Audio Test:"
-# print "  INSERT HEADPHONES into jack"
-# print "    Set volume wheel to full volume"
-# print "    Actuate volume wheel during"
-# print "      Center and WahWah"
-# btn_test('a', 1)
-# call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
+#print ""
+#print "Headphone Stereo Audio Test:"
+#print "  INSERT HEADPHONES into jack"
+#print "    Set volume wheel to full volume"
+#print "    Actuate volume wheel during"
+#print "      Center and WahWah"
+#btn_test('a', 1)
+#call(["omxplayer", "/home/pi/Freeplay/Freeplay-Support/audiotest.mp4", "-o", "alsa"])
 
 if( doUSBtest == 1 ) :
  print ""
  print "USB Port Test:"
-#  btn_test('a', 1)
+ #btn_test('a', 1)
 
 
  import glib
