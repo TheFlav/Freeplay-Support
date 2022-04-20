@@ -68,6 +68,9 @@ gpu_mem_512=256
 gpu_mem_1024=256
 overscan_scale=1
 
+
+#Freeplay Zero (2022 model) additions follow
+
 dtparam=i2c_arm=on
 
 
