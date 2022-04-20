@@ -82,6 +82,12 @@ dpi_mode=87
 dpi_output_format=0x6f006
 #dpi_output_format=0x6fc06 #disable HSYNC and VSYNC
 dpi_timings=640 0 20 10 10 480 0 10 5 5 0 0 0 60 0 60000000 1
+#the following OVERSCAN lines seem to work well with the GBA-style shell and original lens
+#overscan_left=32
+#overscan_right=32
+#overscan_top=15
+#overscan_bottom=84
+
 
 [edid=*]
 #gpio=0-9,12-13,16-17,20-25=ip
@@ -101,6 +107,8 @@ dtoverlay=audremap,swap_lr=off,pins_18_19
 #dtoverlay=i2c-gpio,i2c_gpio_sda=10,i2c_gpio_scl=11,bus=74
 #dtoverlay=pca953x,addr=0x20,pca9555
 dtoverlay=gpio-poweroff,gpiopin=26,active_low
+#the following shutdown line will safe-shutdown the Pi when you hold the power slider for 4 seconds
+dtoverlay=gpio-shutdown,gpio_pin=27,active_low=0,gpio_pull=off,debounce=4000
 
 #dtparam=i2c1_baudrate=10000 #low speed mode
 #dtparam=i2c1_baudrate=100000 #standard mode
