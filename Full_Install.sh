@@ -91,7 +91,7 @@ case $RESP in
 esac
 
 mkdir -p "/home/pi/RetroPie/retropiemenu/Freeplay Options"
-cp /home/pi/Freeplay/Freeplay-Support/OptimalLCDSettings.sh "/home/pi/RetroPie/retropiemenu/Freeplay Options/OptimalLCDSettings.sh"
+sudo cp /home/pi/Freeplay/Freeplay-Support/OptimalLCDSettings.sh "/home/pi/RetroPie/retropiemenu/Freeplay Options/OptimalLCDSettings.sh"
 
 if grep -q "Freeplay Optimal LCD Settings" /opt/retropie/configs/all/emulationstation/gamelists/retropie/gamelist.xml ; then
 	echo "Optimal LCD Settings Changer already in menu"
